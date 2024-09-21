@@ -4,6 +4,7 @@ apiVersion: keycloak.infra.doodle.com/v1beta1
 kind: KeycloakClient
 metadata:
   name: {{ $clientName }}
+  namespace: keycloak
 spec:
   client:
     clientId: {{ $clientName }}
