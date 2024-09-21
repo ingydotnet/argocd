@@ -6,3 +6,10 @@ oauth2-proxy:
     # appVersion is used by default
     tag: "v7.6.0"
     pullPolicy: "IfNotPresent"
+#client:
+#  oauth2-proxy:
+#    clientSecret:
+#      secretName: oauth2-proxy-secrets
+#      secretKey: client_secret
+#    redirectHost: oauth
+#    redirectDomain: example.com
