@@ -14,11 +14,12 @@ spec:
     redirectUris:
       - "https://{{ $clientConfig.redirectHost }}.{{ $clientConfig.redirectDomain }}/*"
     webOrigins:
-      - "https://{{ $clientConfig.redirectHost }}.{{ $clientConfig.redirectDomain }}"
+      - "+"
     protocol: openid-connect
     attributes:
       backchannel.logout.session.required: "true"
       exclude.session.state.from.auth.response: "true"
+      post.logout.redirect.uris: "https://{{ $clientConfig.redirectHost }}.{{ $clientConfig.redirectDomain }}/*"
     bearerOnly: false
     consentRequired: false
     standardFlowEnabled: true
@@ -30,14 +31,12 @@ spec:
     fullScopeAllowed: true
     nodeReRegistrationTimeout: -1
     defaultClientScopes:
-      - "web-origins"
-      - "roles"
+      - "groups"
       - "profile"
       - "email"
     optionalClientScopes:
       - "address"
       - "phone"
-      - "offline_access"
     access:
       view: true
       configure: true
