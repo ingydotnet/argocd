@@ -21,6 +21,7 @@ test: $(OLD-OUT) $(NEW-OUT)
 	@echo NO Differences
 
 $(NEW-OUT): $(CHART) $(TEMPLATE-DEPS)
+	helm dependency build $(CHART)
 	helm template $< > $@
 
 $(OLD-OUT): $(STARTING-COMMIT)
@@ -43,7 +44,6 @@ $(COMMON-TEMPLATES): $(COMMON-CHART)
 
 $(COMMON-CHART):
 	git clone $(COMMON-REPO) $(COMMON-CHART)
-	helm dependency build $(CHART)
 
 $(STARTING-COMMIT):
 	git worktree add $@ $@
