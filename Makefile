@@ -2,10 +2,14 @@ SHELL := bash
 
 CHART ?= home-assistant
 
-COMMON-TAR := $(CHART)/charts/common-3.5.1.tgz
+COMMON-CHART := bjw-s/helm-charts
+COMMON-REPO := https://github.com/$(COMMON-CHART)
+COMMON-TEMPLATES := $(COMMON-CHART)/library/common/
+
+STARTING-COMMIT := 82a6195
 
 TEMPLATE-DEPS := \
-  $(COMMON-TAR) \
+  $(COMMON-TEMPLATES) \
   $(shell find $(CHART) -type f) \
 
 NEW-OUT := $(CHART)-template-new.yaml
@@ -19,17 +23,27 @@ test: $(OLD-OUT) $(NEW-OUT)
 $(NEW-OUT): $(CHART) $(TEMPLATE-DEPS)
 	helm template $< > $@
 
-$(OLD-OUT): $(CHART) $(TEMPLATE-DEPS)
-	helm template $< > $@
+$(OLD-OUT): $(STARTING-COMMIT)
+	$(MAKE) -C $< $(OLD-OUT)
+	mv $</$@ $@
+	sleep 1
+	touch $@
 
 clean:
 	$(RM) $(NEW-OUT)
 
 realclean: clean
-	$(RM) -r */charts */Chart.lock
+	$(RM) -r $(COMMON-CHART) */charts */Chart.lock
 
 distclean: realclean
 	$(RM) $(OLD-OUT)
+	$(RM) -r $(STARTING-COMMIT)
 
-$(COMMON-TAR):
+$(COMMON-TEMPLATES): $(COMMON-CHART)
+
+$(COMMON-CHART):
+	git clone $(COMMON-REPO) $(COMMON-CHART)
 	helm dependency build $(CHART)
+
+$(STARTING-COMMIT):
+	git worktree add $@ $@

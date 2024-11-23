@@ -4,9 +4,15 @@ version: 1.0.0
 description: Home Assistant
 type: application
 dependencies:
-  - name: common
-    repository: https://bjw-s.github.io/helm-charts/
-    version: '3.5.1'
-  - name: templates
-    version: '*'
-    repository: file://../charts/templates
+
+# - name: common
+#   repository: https://bjw-s.github.io/helm-charts/
+#   version: 3.5.1
+
+- name: common
+  repository: file://../bjw-s/helm-charts/charts/library/common
+  version: '*'
+
+- name: templates
+  version: '*'
+  repository: file://../charts/templates
